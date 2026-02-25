@@ -34,6 +34,7 @@ class SplitConfig:
     val_size: float = 0.10
     test_size: float = 0.10
     random_state: int = 42
+    min_class_count: int = 2
 
 
 def clean_clinical_text(text: str) -> str:
@@ -92,8 +93,7 @@ def split_dataframe(df: pd.DataFrame, cfg: SplitConfig) -> Tuple[pd.DataFrame, p
     val_df, test_df = train_test_split(
         temp_df,
         test_size=(1.0 - val_ratio_of_temp),
-        random_state=cfg.random_state,
-        stratify=temp_df["label"],
+        random_state=cfg.random_state,        stratify=(temp_df["label"] if temp_df["label"].value_counts().min() >= 2 else None),
     )
 
     return train_df.reset_index(drop=True), val_df.reset_index(drop=True), test_df.reset_index(drop=True)
@@ -123,6 +123,16 @@ def preprocess_and_save(
 
     df = df.copy()
     df["text"] = df["text"].map(clean_clinical_text)
+
+    # Drop labels that are too rare to stratify reliably
+    label_counts = df["label"].value_counts()
+    keep = label_counts[label_counts >= cfg.min_class_count].index
+    df = df[df["label"].isin(keep)].reset_index(drop=True)
+    if df.empty:
+        raise ValueError(
+            "No rows remaining after filtering rare labels. "
+            "Lower min_class_count or inspect your label distribution."
+        )
 
     train_df, val_df, test_df = split_dataframe(df, cfg)
 
