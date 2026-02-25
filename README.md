@@ -35,33 +35,22 @@ This system provides a **low-latency, API-driven pipeline** that:
 - Demonstrates **production-grade MLOps and system design**  
 
 ---
-## 5. Scalability & Engineering Considerations
-Designed For
-
-Stateless API → enables horizontal scaling
-
-Container orchestration (Kubernetes-ready)
-
-Supports both batch and real-time inference
-
-Optimization Opportunities
-
-Model quantization to reduce latency
-
-GPU-backed inference endpoints
-
-Request batching to improve throughput
+## 5. Scalability & Engineering Considerations Designed For
+- Stateless API → enables horizontal scaling
+- Container orchestration (Kubernetes-ready)
+- Supports both batch and real-time inference
+- Optimization Opportunities
+- Model quantization to reduce latency
+- GPU-backed inference endpoints
+- Request batching to improve throughput
 
 ---
 ## 6. Reproducibility
 
-Deterministic preprocessing pipeline
-
-Clear data lineage (raw/ → processed/)
-
-Docker ensures consistent runtime environment
-
-Modular separation of training and inference
+- Deterministic preprocessing pipeline
+- Clear data lineage (raw/ → processed/)
+- Docker ensures consistent runtime environment
+- Modular separation of training and inference
 
 ## Project Structure
 
@@ -78,7 +67,7 @@ clinical-nlp-extraction-api/
 ├── Dockerfile               # Container build instructions
 ├── requirements.txt         # Python dependencies
 └── README.md                # Project documentation
-
+```
 ---
 
 ## 8. Local Development
