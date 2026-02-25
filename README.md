@@ -63,7 +63,9 @@ Docker ensures consistent runtime environment
 
 Modular separation of training and inference
 
-7. Repository Structure
+## Project Structure
+
+```plaintext
 clinical-nlp-extraction-api/
 ├── data/
 │   ├── raw/                 # Source dataset (MTSamples)
@@ -73,9 +75,9 @@ clinical-nlp-extraction-api/
 │   ├── api/                 # FastAPI routes
 │   ├── model/               # Training + inference
 │   └── utils/               # Preprocessing logic
-├── Dockerfile
-├── requirements.txt
-└── README.md
+├── Dockerfile               # Container build instructions
+├── requirements.txt         # Python dependencies
+└── README.md                # Project documentation
 
 ---
 
