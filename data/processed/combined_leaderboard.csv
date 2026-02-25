@@ -1,0 +1,10 @@
+model,split,accuracy,f1_macro,source
+svm,cv5_mean,0.1543317015984665,0.1202941196879957,classical_cv
+rf,cv5_mean,0.1467759770606593,0.0654723146121859,classical_cv
+logreg,cv5_mean,0.2744223183308777,0.063190468237814,classical_cv
+gb,cv5_mean,0.1510324287502178,0.0404175315139998,classical_cv
+logreg,test,,,classical_test
+svm,test,,,classical_test
+rf,test,,,classical_test
+gb,test,,,classical_test
+distilbert,test,,,classical_test
