@@ -1,0 +1,10 @@
+
+# ---- model artifacts ----
+models/
+clinical-nlp-extraction-api/models/
+*.joblib
+*.pt
+*.bin
+*.safetensors
+*.onnx
+*.pkl
