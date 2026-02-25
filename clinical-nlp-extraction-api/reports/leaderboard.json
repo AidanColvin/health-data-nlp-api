@@ -1,1 +1,42 @@
-[]
+[
+  {
+    "accuracy": 0.323943661971831,
+    "f1_macro": 0.38836582865547103,
+    "f1_weighted": 0.2944673106212746,
+    "precision_macro": 0.3595558295355866,
+    "recall_macro": 0.488287031442472,
+    "n": 497,
+    "model": "logreg",
+    "artifact": "models/classical/logreg.joblib"
+  },
+  {
+    "accuracy": 0.10865191146881288,
+    "f1_macro": 0.15734107301566355,
+    "f1_weighted": 0.09647363566920676,
+    "precision_macro": 0.14181357750046095,
+    "recall_macro": 0.1868723884250955,
+    "n": 497,
+    "model": "svm",
+    "artifact": "models/classical/svm.joblib"
+  },
+  {
+    "accuracy": 0.07645875251509054,
+    "f1_macro": 0.04210645219163226,
+    "f1_weighted": 0.07048890781172756,
+    "precision_macro": 0.04149395206078768,
+    "recall_macro": 0.042961228127820605,
+    "n": 497,
+    "model": "rf",
+    "artifact": "models/classical/rf.joblib"
+  },
+  {
+    "accuracy": 0.23138832997987926,
+    "f1_macro": 0.022283306221260134,
+    "f1_weighted": 0.10092781452784745,
+    "precision_macro": 0.08073699046771261,
+    "recall_macro": 0.033421256314160014,
+    "n": 497,
+    "model": "gb",
+    "artifact": "models/classical/gb.joblib"
+  }
+]
