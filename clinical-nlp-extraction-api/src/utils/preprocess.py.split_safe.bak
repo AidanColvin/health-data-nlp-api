@@ -67,100 +67,39 @@ def build_label_map(labels: pd.Series) -> Dict[str, int]:
     return {lab: i for i, lab in enumerate(uniq)}
 
 
-def split_dataframe(df, cfg):
+def split_dataframe(df: pd.DataFrame, cfg: SplitConfig) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """
-    Split dataframe into train/val/test.
-
-    Robust behavior:
-      - Attempts stratified splits when feasible.
-      - If stratification fails (rare classes or unlucky split), falls back to non-stratified split.
-      - Supports cfg.val_size == 0.0 by returning an empty val split.
+    Split into train/val/test with stratification.
 
     Args:
-        df: DataFrame with columns ["text", "label", ...]
-        cfg: SplitConfig with train_size, val_size, test_size, random_state
+        df: DataFrame with columns ["text","label"]
+        cfg: split config
 
     Returns:
-        (train_df, val_df, test_df) with reset indexes.
+        train_df, val_df, test_df
     """
-    from sklearn.model_selection import train_test_split
+    if round(cfg.train_size + cfg.val_size + cfg.test_size, 6) != 1.0:
+        raise ValueError("train_size + val_size + test_size must equal 1.0")
 
-    train_size = float(getattr(cfg, "train_size", 0.8))
-    val_size = float(getattr(cfg, "val_size", 0.1))
-    test_size = float(getattr(cfg, "test_size", 0.1))
-    rs = int(getattr(cfg, "random_state", 42))
+    train_df, temp_df = train_test_split(
+        df,
+        test_size=(1.0 - cfg.train_size),
+        random_state=cfg.random_state,
+        stratify=df["label"],
+    )
 
-    total = train_size + val_size + test_size
-    if abs(total - 1.0) > 1e-6:
-        raise ValueError(f"Split sizes must sum to 1.0. Got train+val+test={total:.6f}")
-
-    df = df.reset_index(drop=True)
-
-    temp_size = val_size + test_size
-    if temp_size <= 0.0:
-        empty = df.iloc[0:0].copy()
-        return df.copy(), empty, empty
-
-    strat1 = None
-    if "label" in df.columns:
-        vc = df["label"].value_counts()
-        if len(vc) > 0 and vc.min() >= 2:
-            strat1 = df["label"]
-
-    try:
-        train_df, temp_df = train_test_split(
-            df,
-            test_size=temp_size,
-            random_state=rs,
-            stratify=strat1,
-        )
-    except ValueError:
-        train_df, temp_df = train_test_split(
-            df,
-            test_size=temp_size,
-            random_state=rs,
-            stratify=None,
-        )
-
-    if val_size <= 0.0:
-        val_df = df.iloc[0:0].copy()
-        test_df = temp_df
-        return train_df.reset_index(drop=True), val_df.reset_index(drop=True), test_df.reset_index(drop=True)
-
-    val_ratio_of_temp = val_size / temp_size
-    second_test_size = 1.0 - val_ratio_of_temp
-
-    if second_test_size <= 0.0:
-        val_df = temp_df
-        test_df = temp_df.iloc[0:0].copy()
-        return train_df.reset_index(drop=True), val_df.reset_index(drop=True), test_df.reset_index(drop=True)
-    if second_test_size >= 1.0:
-        val_df = temp_df.iloc[0:0].copy()
-        test_df = temp_df
-        return train_df.reset_index(drop=True), val_df.reset_index(drop=True), test_df.reset_index(drop=True)
-
-    strat2 = None
-    if "label" in temp_df.columns:
-        vc2 = temp_df["label"].value_counts()
-        if len(vc2) > 0 and vc2.min() >= 2:
-            strat2 = temp_df["label"]
-
-    try:
-        val_df, test_df = train_test_split(
-            temp_df,
-            test_size=second_test_size,
-            random_state=rs,
-            stratify=strat2,
-        )
-    except ValueError:
-        val_df, test_df = train_test_split(
-            temp_df,
-            test_size=second_test_size,
-            random_state=rs,
-            stratify=None,
-        )
+    # val/test split from temp
+    val_ratio_of_temp = cfg.val_size / (cfg.val_size + cfg.test_size)
+    val_df, test_df = train_test_split(
+        temp_df,
+        test_size=(1.0 - val_ratio_of_temp),
+        random_state=cfg.random_state,
+        stratify=temp_df["label"],
+    )
 
     return train_df.reset_index(drop=True), val_df.reset_index(drop=True), test_df.reset_index(drop=True)
+
+
 def preprocess_and_save(
     df: pd.DataFrame,
     out_dir: str | Path,
