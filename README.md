@@ -1,77 +1,116 @@
-Clinical NLP Extraction API
-Overview
+# Clinical NLP Extraction API
 
-This repository contains an end-to-end Machine Learning Operations (MLOps) pipeline for clinical Natural Language Processing (NLP). It uses a fine-tuned language model to process unstructured medical transcriptions. The model classifies the clinical specialty and extracts key medical entities. The application is served via a FastAPI backend and containerized using Docker for scalable cloud deployment.
-Architecture
+> Scalable, production-oriented clinical NLP system for transforming unstructured medical text into structured, model-ready signals.
 
-    Data: MTSamples dataset (Kaggle).
+---
 
-    Model: Fine-tuned ClinicalBERT / LLaMA.
+## 1. Problem
 
-    Backend: FastAPI (Python).
+Clinical insights are frequently embedded in **unstructured transcriptions**, limiting their usability for:
 
-    Containerization: Docker.
+- Large-scale analytics  
+- Clinical decision support systems  
+- Downstream machine learning pipelines  
 
-    Deployment: AWS / Google Cloud Platform (GCP).
+Manual extraction is **non-scalable, error-prone, and expensive**.
 
-Dataset Setup
+---
 
-    Download the mtsamples.csv dataset from Kaggle.
+## 2. Solution
 
-    Place the file in the /data/raw/ directory.
+This system provides a **low-latency, API-driven pipeline** that:
 
-Quick Start
+- Extracts clinically relevant entities (symptoms, negations)  
+- Classifies medical specialty using transformer models  
+- Converts free-text → structured JSON outputs  
+- Deploys as a **containerized, horizontally scalable service**  
 
-Run the following commands to build and start the Docker container locally.
-Bash
+---
 
-# Clone the repository
+## 3. Key Impact
+
+- Enables **real-time clinical text structuring**  
+- Reduces manual chart review workload  
+- Provides **ML-ready features** for downstream healthcare models  
+- Demonstrates **production-grade MLOps and system design**  
+
+---
+
+## 4. System Design
+
+### High-Level Flow
+8. Scalability & Engineering Considerations
+Designed For
+
+Stateless API → horizontal scaling
+
+Container orchestration (Kubernetes-ready)
+
+Batch + real-time inference support (extensible)
+
+Optimization Opportunities
+
+Model quantization (reduce latency)
+
+GPU-backed inference endpoints
+
+Request batching for throughput improvement
+
+9. Reproducibility
+
+Deterministic preprocessing pipeline
+
+Clear data lineage (raw/ → processed/)
+
+Docker ensures consistent runtime environment
+
+Modular training + inference separation
+
+10. Repository Structure
+clinical-nlp-extraction-api/
+├── data/
+│   ├── raw/                 # Source dataset (MTSamples)
+│   └── processed/           # Cleaned data
+├── models/                  # Model artifacts
+├── src/
+│   ├── api/                 # FastAPI routes
+│   ├── model/               # Training + inference
+│   └── utils/               # Preprocessing logic
+├── Dockerfile
+├── requirements.txt
+└── README.md
+
+11. Local Development
 git clone https://github.com/AidanColvin/clinical-nlp-extraction-api.git
 cd clinical-nlp-extraction-api
 
-# Build the Docker image
-docker build -t clinical-nlp-api .
+# Dataset
+MTSamples on Kaggle. This dataset provides roughly 5,000 scraped medical transcription records across various medical specialties without requiring strict HIPAA data use agreements.
 
-# Run the container
+# Build + run
+docker build -t clinical-nlp-api .
 docker run -p 8000:8000 clinical-nlp-api
 
-API Usage
+12. Future Work
 
-Once the container is running, the API is accessible at http://localhost:8000.
+Add MLflow-based experiment tracking
 
-Endpoint: /predict
-Method: POST
-Payload:
-JSON
+Implement CI/CD pipeline (GitHub Actions)
 
-{
-  "transcription": "Patient presents with acute knee pain and swelling. Denies chest pain or shortness of breath."
-}
+Expand entity schema (medications, procedures, diagnoses)
 
-Response:
-JSON
+Integrate FHIR-compatible outputs
 
-{
-  "specialty": "Orthopedic",
-  "entities": {
-    "symptoms": ["knee pain", "swelling"],
-    "negated_symptoms": ["chest pain", "shortness of breath"]
-  },
-  "confidence_score": 0.94
-}
+Add monitoring + alerting for model drift
 
-Directory Structure
-Plaintext
+13. Why This Project Stands Out
 
-clinical-nlp-extraction-api/
-├── data/
-│   ├── raw/                 # Unprocessed MTSamples data
-│   └── processed/           # Cleaned data for model training
-├── models/                  # Saved weights and tokenizers
-├── src/
-│   ├── api/                 # FastAPI routes and schemas
-│   ├── model/               # PyTorch training and inference scripts
-│   └── utils/               # Text cleaning and preprocessing functions
-├── Dockerfile               # Container build instructions
-├── requirements.txt         # Python dependencies
-└── README.md                # Project documentation
+This project demonstrates:
+
+End-to-end ownership: data → model → API → deployment
+
+Strong system design and scalability awareness
+
+Practical application of transformer-based NLP in healthcare
+
+Production-oriented thinking (latency, reproducibility, modularity)
