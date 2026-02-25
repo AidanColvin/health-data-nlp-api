@@ -8,3 +8,14 @@ clinical-nlp-extraction-api/models/
 *.safetensors
 *.onnx
 *.pkl
+
+# ---- model artifacts ----
+models/
+clinical-nlp-extraction-api/models/
+*.joblib
+*.pt
+*.bin
+*.safetensors
+*.onnx
+*.pkl
+*.ckpt
