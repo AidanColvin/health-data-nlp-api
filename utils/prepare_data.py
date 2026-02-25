@@ -12,8 +12,8 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from src.utils.load_data import load_mtsamples_csv
-from src.utils.preprocess import preprocess_and_save, SplitConfig
+from utils.load_data import load_mtsamples_csv
+from utils.preprocess import preprocess_and_save, SplitConfig
 
 
 def parse_args() -> argparse.Namespace:
