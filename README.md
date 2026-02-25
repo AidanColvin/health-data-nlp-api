@@ -35,28 +35,25 @@ This system provides a **low-latency, API-driven pipeline** that:
 - Demonstrates **production-grade MLOps and system design**  
 
 ---
-
-## 4. System Design
-
-### High-Level Flow
-8. Scalability & Engineering Considerations
+## 5. Scalability & Engineering Considerations
 Designed For
 
-Stateless API → horizontal scaling
+Stateless API → enables horizontal scaling
 
 Container orchestration (Kubernetes-ready)
 
-Batch + real-time inference support (extensible)
+Supports both batch and real-time inference
 
 Optimization Opportunities
 
-Model quantization (reduce latency)
+Model quantization to reduce latency
 
 GPU-backed inference endpoints
 
-Request batching for throughput improvement
+Request batching to improve throughput
 
-9. Reproducibility
+---
+## 6. Reproducibility
 
 Deterministic preprocessing pipeline
 
@@ -64,9 +61,9 @@ Clear data lineage (raw/ → processed/)
 
 Docker ensures consistent runtime environment
 
-Modular training + inference separation
+Modular separation of training and inference
 
-10. Repository Structure
+7. Repository Structure
 clinical-nlp-extraction-api/
 ├── data/
 │   ├── raw/                 # Source dataset (MTSamples)
@@ -80,37 +77,33 @@ clinical-nlp-extraction-api/
 ├── requirements.txt
 └── README.md
 
-11. Local Development
+---
+
+## 8. Local Development
+Clone Repository
 git clone https://github.com/AidanColvin/clinical-nlp-extraction-api.git
 cd clinical-nlp-extraction-api
+Dataset
 
-# Dataset
-MTSamples on Kaggle. This dataset provides roughly 5,000 scraped medical transcription records across various medical specialties without requiring strict HIPAA data use agreements.
+Source: MTSamples (Kaggle)
 
-# Build + run
-docker build -t clinical-nlp-api .
-docker run -p 8000:8000 clinical-nlp-api
+~5,000 medical transcription records across specialties
 
-12. Future Work
+De-identified dataset (no strict HIPAA constraints)
 
-Add MLflow-based experiment tracking
+---
+## 9. Future Work
+- Add MLflow-based experiment tracking
+- Implement CI/CD pipeline (GitHub Actions)
+- Expand entity schema (medications, procedures, diagnoses)
+- Integrate FHIR-compatible outputs
+- Add monitoring and alerting for model drift
 
-Implement CI/CD pipeline (GitHub Actions)
+---
+## 10. Why This Project Stands Out
+- End-to-end ownership: data → model → API → deployment
+- Strong system design and scalability awareness
+- Practical application of transformer-based NLP in healthcare
+- Production-oriented engineering (latency, reproducibility, modularity)
 
-Expand entity schema (medications, procedures, diagnoses)
 
-Integrate FHIR-compatible outputs
-
-Add monitoring + alerting for model drift
-
-13. Why This Project Stands Out
-
-This project demonstrates:
-
-End-to-end ownership: data → model → API → deployment
-
-Strong system design and scalability awareness
-
-Practical application of transformer-based NLP in healthcare
-
-Production-oriented thinking (latency, reproducibility, modularity)
