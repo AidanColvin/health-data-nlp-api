@@ -3,16 +3,16 @@ evaluate_classical.py
 
 Goal
 ----
-Evaluate the saved classical TF-IDF model on the held-out test split.
+Evaluate the saved classical model on held-out test set.
 
 Inputs
 ------
 - models/classical/model.joblib
-- data/processed/test.csv (columns: text,label)
+- data/processed/test.csv (text,label)
 
 Outputs
 -------
-- prints Accuracy and F1 (macro)
+- prints Accuracy and Macro F1
 """
 
 from __future__ import annotations
@@ -23,12 +23,7 @@ from sklearn.metrics import accuracy_score, f1_score
 
 
 def main() -> None:
-    test_path = "data/processed/test.csv"
-    df = pd.read_csv(test_path)
-
-    if "text" not in df.columns or "label" not in df.columns:
-        raise ValueError("test.csv must have columns: text,label")
-
+    df = pd.read_csv("data/processed/test.csv")
     X = df["text"].astype(str).values
     y = df["label"].astype(str).values
 

@@ -3,11 +3,11 @@ train_classical.py
 
 Goal
 ----
-Train and compare strong classical baselines for specialty classification using TF-IDF features.
+Train and compare TF-IDF baselines with 5-fold Stratified CV, then fit best model on full train split.
 
 Inputs
 ------
-- data/processed/train.csv (columns: text,label)
+- data/processed/train.csv (text,label)
 
 Outputs
 -------
@@ -16,8 +16,7 @@ Outputs
 
 Notes
 -----
-- Uses StratifiedKFold cross-validation (5-fold).
-- Trains Logistic Regression and Linear SVM (best-practice baselines for text).
+- Strong baselines for text: Logistic Regression + Linear SVM.
 """
 
 from __future__ import annotations
@@ -36,12 +35,7 @@ from sklearn.svm import LinearSVC
 
 
 def main() -> None:
-    train_path = "data/processed/train.csv"
-    df = pd.read_csv(train_path)
-
-    if "text" not in df.columns or "label" not in df.columns:
-        raise ValueError("train.csv must have columns: text,label")
-
+    df = pd.read_csv("data/processed/train.csv")
     X = df["text"].astype(str).values
     y = df["label"].astype(str).values
 
@@ -50,12 +44,11 @@ def main() -> None:
         "linear_svm": LinearSVC(class_weight="balanced"),
     }
 
+    cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+
     results = {}
     best_name = None
     best_score = -1.0
-    best_pipeline = None
-
-    cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
 
     for name, clf in models.items():
         pipe = Pipeline(
@@ -64,7 +57,6 @@ def main() -> None:
                 ("clf", clf),
             ]
         )
-
         preds = cross_val_predict(pipe, X, y, cv=cv)
         score = f1_score(y, preds, average="macro")
         results[name] = {"f1_macro_cv": float(score)}
@@ -72,14 +64,21 @@ def main() -> None:
         if score > best_score:
             best_score = score
             best_name = name
-            best_pipeline = pipe
 
-    assert best_pipeline is not None and best_name is not None
+    assert best_name is not None
 
-    best_pipeline.fit(X, y)
+    # Fit best on full training split
+    best_clf = models[best_name]
+    best_pipe = Pipeline(
+        steps=[
+            ("tfidf", TfidfVectorizer(max_features=100000, ngram_range=(1, 2), min_df=2)),
+            ("clf", best_clf),
+        ]
+    )
+    best_pipe.fit(X, y)
 
     os.makedirs("models/classical", exist_ok=True)
-    joblib.dump(best_pipeline, "models/classical/model.joblib")
+    joblib.dump(best_pipe, "models/classical/model.joblib")
 
     with open("models/classical/metrics.json", "w", encoding="utf-8") as f:
         json.dump({"cv_results": results, "best_model": best_name}, f, indent=2)
