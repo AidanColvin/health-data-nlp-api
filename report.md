@@ -37,7 +37,7 @@ The project reports accuracy and class-balanced macro-F1 metrics. Table 2 presen
 
 Logistic regression maintains the highest accuracy across all five folds, ranging between 0.25 and 0.29. Gradient boosting accuracy drops sharply at fold five. SVM and random forest maintain stable accuracy trajectories near 0.15.
 
-![Top 20 Significant Predictors (Magnitude): svm](reports/figures/image_f81300.png)
+![Top 20 Significant Predictors (Magnitude): svm]
 ![alt text](image-1.png)
 
 The SVM model relies heavily on specific clinical tokens to form its decision boundaries. The top five predictive tokens by absolute magnitude are "sleep", "eye", "operation", "discharge", and "thyroid".
