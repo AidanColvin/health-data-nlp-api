@@ -13,3 +13,21 @@ datasets
 evaluate
 accelerate
 torch
+
+# ML / NLP
+torch
+transformers
+datasets
+scikit-learn
+pandas
+numpy
+
+# API
+fastapi
+uvicorn
+
+# Dev (optional)
+pytest
+ruff
+black
+mypy
