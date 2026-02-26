@@ -4,7 +4,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ## Overview
-Medical data is strictly protected under HIPAA privacy regulations. This limits data availability for machine learning research. This project bypasses this limitation. It utilizes publicly available medical transcription samples scraped from `mtsamples.com`. The primary objective is to accurately classify medical specialties. It uses only the raw clinical transcription text.
+ The primary objective is to accurately classify medical specialties using publicly available medical transcription samples scraped from mtsamples.com.
 
 ## Dataset
 The dataset consists of clinical notes categorized by medical specialty.
