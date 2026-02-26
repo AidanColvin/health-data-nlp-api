@@ -1,4 +1,7 @@
 # Medical Transcription Specialty Classification
+[![Kaggle](https://img.shields.io/badge/Kaggle-Playground%20Series%20S6E2-20BEFF?logo=kaggle&logoColor=white)](https://kaggle.com/competitions/playground-series-s6e2)
+[![Python](https://img.shields.io/badge/Python-3.8%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ## Overview
 Medical data is strictly protected under HIPAA privacy regulations. This limits data availability for machine learning research. This project bypasses this limitation. It utilizes publicly available medical transcription samples scraped from `mtsamples.com`. The primary objective is to accurately classify medical specialties. It uses only the raw clinical transcription text.
